@@ -110,7 +110,7 @@ export default function NewHeroSection() {
                   </div>
                   <div className="px-4">
                     <div className="grid grid-cols-1 gap-4 sm:gap-3 sm:grid-cols-2 group">
-                      {projects.slice(0, 6).map((project) => (
+                      {projects.slice(0, 4).map((project) => (
                         <MasonryProjectCard key={project.id} project={project} />
                       ))}
                     </div>

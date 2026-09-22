@@ -43,9 +43,14 @@ export const MasonryProjectCard = ({ project, className = "" }: MasonryProjectCa
       : getVideoSource(project.video)
     : null;
 
+  const openTarget = project.githubLink || project.liveLink;
+  const openProject = () => {
+    if (openTarget) window.open(openTarget, '_blank', 'noopener,noreferrer');
+  };
+
 return (
   <div
-    className={`group/item block w-full touch-manipulation ${className}`}
+    className={`group/item block w-full touch-manipulation ${openTarget ? 'cursor-pointer' : ''} ${className}`}
     style={{
       WebkitTapHighlightColor: 'transparent',
       WebkitTouchCallout: 'none',
@@ -54,6 +59,15 @@ return (
     }}
     onMouseEnter={() => setIsHovered(true)}
     onMouseLeave={() => setIsHovered(false)}
+    onClick={openProject}
+    role={openTarget ? 'link' : undefined}
+    tabIndex={openTarget ? 0 : undefined}
+    onKeyDown={(e) => {
+      if (openTarget && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        openProject();
+      }
+    }}
   >
     <div
       className="flex flex-col w-full h-full p-1 bg-white dark:bg-white/10 border border-black/10 dark:border-white/5 rounded-[10px] transition-all duration-300 ease-out group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100 group-has-hover:group-hover/item:border-black/20 group-has-hover:group-hover/item:dark:border-white/10 group-has-hover:group-hover/item:scale-[1.02] group-has-hover:group-hover/item:shadow-lg group-has-hover:group-hover/item:shadow-black/5 dark:group-has-hover:group-hover/item:shadow-black/20"
