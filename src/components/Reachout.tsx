@@ -1,6 +1,7 @@
 'use client'
 import Image from "next/image";
 import { FaGithub, FaLinkedin, FaPaperclip, FaXTwitter } from "react-icons/fa6";
+import { SiLeetcode } from "react-icons/si";
 import { IoMdMail } from "react-icons/io";
 import NeumorphButton from "./NeumorphButton";
 import { Tooltip } from "./ui/tooltip-card";
@@ -13,6 +14,7 @@ interface ReachoutProps {
     resume?: string
     github?: string
     linkedin?: string
+    leetcode?: string
     mail?: string
   }
 }
@@ -23,6 +25,7 @@ export default function Reachout({
   socialLinks = {
     github: "https://github.com/Meraj-08",
     linkedin: "https://www.linkedin.com/in/md-meraj-alam-4670272a6/",
+    leetcode: "https://leetcode.com/u/mdmeraj08/",
     resume: "https://drive.google.com/file/d/1lPVbKG472Oq7L0KhmkvXJpppgVzfAGjQ/view?usp=sharing",
     mail: "mailto:mdmerajalam821@gmail.com"
   }
@@ -97,11 +100,35 @@ export default function Reachout({
                       GitHub
                     </span>
                   </NeumorphButton>
-                
+
               </Tooltip>
             </a>
           )}
-          
+
+          {socialLinks.leetcode && (
+            <a
+              className="touch-manipulation active:opacity-75"
+              href={socialLinks.leetcode}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                WebkitTapHighlightColor: "transparent",
+                WebkitTouchCallout: "none",
+                WebkitUserSelect: "none",
+                userSelect: "none",
+              }}
+            >
+              <Tooltip content="leetcode.com/u/mdmeraj08" padded>
+                <NeumorphButton className="flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-3 sm:py-2">
+                  <SiLeetcode className="text-[20px] sm:text-[18px] text-neutral-800 dark:text-white/80 shrink-0" />
+                  <span className="hidden sm:inline text-sm font-medium text-neutral-800 dark:text-white/80">
+                    LeetCode
+                  </span>
+                </NeumorphButton>
+              </Tooltip>
+            </a>
+          )}
+
           {socialLinks.twitter && (
             <a
               className="touch-manipulation active:opacity-75"
