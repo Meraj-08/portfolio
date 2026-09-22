@@ -79,7 +79,7 @@ export default function NewHeroSection() {
               <Reveal delay={0.1}>
                 <ContentSection className="pb-6 sm:pb-8 pt-4 sm:pt-6 px-2 sm:px-0">
                   <ContentParagraph className="mb-2 text-base sm:text-lg">
-                    <span className="font-medium dark:text-white text-black">I build systems that scale.</span> I&apos;m a CS undergrad and SDE intern at Amazon, working across backend services, cloud infrastructure (AWS, CDK, ECS), and full-stack applications. From launch frameworks and zero-downtime migrations to React front-ends, I care about reliable systems and shipping results people can depend on.
+                    <span className="font-medium dark:text-white text-black">I build resilient, high-throughput software.</span> As a CS undergrad and Amazon SDE Intern, I work across backend microservices, AWS cloud infrastructure (CDK, ECS), and full-stack React applications. Whether designing deployment frameworks or executing zero-downtime architectural modernizations, I focus on low-latency systems, clean design, and shipping results at scale.
                   </ContentParagraph>
                 </ContentSection>
               </Reveal>
