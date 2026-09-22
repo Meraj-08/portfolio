@@ -3,7 +3,6 @@ import Image from "next/image";
 import { FaGithub, FaLinkedin, FaPaperclip, FaXTwitter } from "react-icons/fa6";
 import { IoMdMail } from "react-icons/io";
 import NeumorphButton from "./NeumorphButton";
-import { VisitorCount } from "./VisitorCount";
 import { Tooltip } from "./ui/tooltip-card";
 
 interface ReachoutProps {
@@ -209,16 +208,6 @@ export default function Reachout({
               </a>
             </Tooltip>
           )}
-        </div>
-        
-        {/* Footer Section */}
-        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 text-center sm:text-left">
-            <div className="text-sm sm:text-md dark:text-white/40 text-black/40">
-              © {new Date().getFullYear()} Md Meraj Alam.
-            </div>
-            <VisitorCount className="text-sm sm:text-md dark:text-white/40 text-black/40" />
-          </div>
         </div>
       </div>
     </div>

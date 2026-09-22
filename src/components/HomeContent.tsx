@@ -9,6 +9,7 @@ import ContentParagraph from './ContentParagraph'
 import SectionBorder from './SectionBorder'
 import ExperienceContent from './ExperienceContent'
 import Reachout from './Reachout'
+import Footer from './Footer'
 import CallToAction from './CallToAction'
 // import ContributionsDisplay from './ContributionsDisplay'
 import OpenSourceContributionsCard from './ContributionCard'
@@ -255,11 +256,20 @@ export default function NewHeroSection() {
               {/* Reachout Section */}
               <Reveal delay={0.1}>
                 <div className="mt-4 sm:mt-6">
-                  <Reachout 
+                  <Reachout
                     title="Let's connect"
                     subtitle="Find me on these platforms"
                   />
                 </div>
+              </Reveal>
+
+              <Reveal delay={0.05}>
+                <SectionBorder className="mt-4" />
+              </Reveal>
+
+              {/* Footer */}
+              <Reveal delay={0.1}>
+                <Footer />
               </Reveal>
             </div>
           </div>
