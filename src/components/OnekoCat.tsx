@@ -43,6 +43,17 @@ export default function OnekoCat() {
   const [idleAnimationFrame, setIdleAnimationFrame] = useState(0);
   const lastFrameTimestamp = useRef<number | null>(null);
   const animationFrameId = useRef<number | null>(null);
+  // Only chase a real hovering cursor: touch devices have none, and
+  // reduced-motion users opt out. Stay hidden until the cursor first moves
+  // instead of idling in the top-left corner.
+  const [enabled, setEnabled] = useState(false);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const canFollowCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setEnabled(canFollowCursor && !reducedMotion);
+  }, []);
 
   const setSprite = (name: string, frame: number) => {
     if (!nekoRef.current) return;
@@ -132,6 +143,11 @@ export default function OnekoCat() {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
+      if (!active) {
+        // Appear at the cursor on the first move rather than walking in from the corner.
+        setNekoPos({ x: event.clientX, y: event.clientY });
+        setActive(true);
+      }
       setMousePos({ x: event.clientX, y: event.clientY });
     };
 
@@ -148,9 +164,7 @@ export default function OnekoCat() {
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    // Check for reduced motion preference
-    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!isReducedMotion) {
+    if (enabled) {
       document.addEventListener('mousemove', handleMouseMove);
       animationFrameId.current = requestAnimationFrame(animate);
     }
@@ -162,7 +176,9 @@ export default function OnekoCat() {
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nekoPos, mousePos, frameCount, idleTime, idleAnimation, idleAnimationFrame]);
+  }, [nekoPos, mousePos, frameCount, idleTime, idleAnimation, idleAnimationFrame, enabled, active]);
+
+  if (!enabled || !active) return null;
 
   return (
     <div
