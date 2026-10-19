@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { ArrowUpRight, ChevronDown, ChevronUp, GitMerge } from 'lucide-react'
+import { GitMerge } from 'lucide-react'
 
 interface Contribution {
   title: string
@@ -85,67 +84,38 @@ function formatNumber(value: number) {
 }
 
 export default function OpenSourceContributionsCard() {
-  const [showAll, setShowAll] = useState(false)
-  const displayedContributions = showAll ? contributions : contributions.slice(0, 3)
-
   return (
-    <div className="rounded-lg bg-white p-3 dark:bg-zinc-900 sm:p-6">
-      <div className="space-y-4">
-        {displayedContributions.map((contribution, index) => (
-          <div key={contribution.link}>
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <div className="mb-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-                  <GitMerge aria-hidden="true" className="size-4 shrink-0 text-purple-500 dark:text-purple-400" />
-                  <h3 className="text-sm font-medium leading-6 text-black/85 dark:text-white/85 sm:text-[15px]">
-                    {contribution.title}
-                  </h3>
-                </div>
-                <p className="mb-1 text-[11px] text-neutral-500 dark:text-neutral-400">
-                  {contribution.repository} <span aria-hidden="true">·</span> Merged {contribution.mergedAt}
-                </p>
-                <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
-                  {contribution.description}
-                </p>
-                <p className="mt-2 text-[10px] text-neutral-500 dark:text-neutral-500">
-                  +{formatNumber(contribution.additions)} / −{formatNumber(contribution.deletions)} lines
-                  <span aria-hidden="true"> · </span>{contribution.changedFiles} files changed
-                </p>
-              </div>
-              <a
-                href={contribution.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`View ${contribution.title} on GitHub`}
-                className="mt-1 shrink-0 rounded-lg border-2 border-neutral-500 bg-neutral-200 p-2 transition-colors hover:bg-neutral-300 dark:border-neutral-500 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-              >
-                <ArrowUpRight aria-hidden="true" className="size-4 text-neutral-600 dark:text-neutral-300" />
-              </a>
+    <div className="group">
+      {contributions.slice(0, 3).map((contribution) => (
+        <a
+          key={contribution.link}
+          href={contribution.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full touch-manipulation active:opacity-75"
+          aria-label={`View ${contribution.title} on GitHub`}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
+        >
+          <article className="group/item cursor-pointer touch-manipulation border-b border-neutral-200 py-5 transition-opacity duration-300 group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100 dark:border-neutral-800 sm:py-6">
+            <div className="mb-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+              <GitMerge aria-hidden="true" className="size-4 shrink-0 text-purple-500 dark:text-purple-400" />
+              <h3 className="text-sm font-medium leading-6 text-black/80 transition-colors group-has-hover:group-hover/item:text-black dark:text-white/80 dark:group-has-hover:group-hover/item:text-white sm:text-[15px]">
+                {contribution.title}
+              </h3>
             </div>
-            {index < displayedContributions.length - 1 ? (
-              <div className="mt-4 border-b border-neutral-300 dark:border-[#2E2E2E]" />
-            ) : null}
-          </div>
-        ))}
-      </div>
-
-      {contributions.length > 3 ? (
-        <div className="mt-4 border-t border-neutral-300 pt-4 dark:border-[#2E2E2E]">
-          <button
-            type="button"
-            onClick={() => setShowAll(!showAll)}
-            className="group inline-flex items-center gap-2 text-sm text-neutral-600 transition-colors hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
-            aria-expanded={showAll}
-          >
-            <span>{showAll ? 'Show less' : `Show all ${contributions.length} contributions`}</span>
-            {showAll ? (
-              <ChevronUp aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5" />
-            ) : (
-              <ChevronDown aria-hidden="true" className="size-4 transition-transform group-hover:translate-y-0.5" />
-            )}
-          </button>
-        </div>
-      ) : null}
+            <p className="mb-1 text-[11px] text-neutral-500 dark:text-neutral-400">
+              {contribution.repository} <span aria-hidden="true">·</span> Merged {contribution.mergedAt}
+            </p>
+            <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
+              {contribution.description}
+            </p>
+            <p className="mt-2 text-[10px] text-neutral-500 dark:text-neutral-500">
+              +{formatNumber(contribution.additions)} / −{formatNumber(contribution.deletions)} lines
+              <span aria-hidden="true"> · </span>{contribution.changedFiles} files changed
+            </p>
+          </article>
+        </a>
+      ))}
     </div>
   )
 }

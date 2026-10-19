@@ -198,10 +198,21 @@ export default function NewHeroSection() {
                 <div className="sm:px-12 py-2">
                   <div className="px-4 mb-4 sm:mb-6 mt-4 sm:mt-6">
                     <h2 className="text-base sm:text-xl opacity-70 font-[family-name:var(--font-instrument-serif)]">Open Source Contributions</h2>
-                    <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">Selected merged pull requests, ordered by lines changed.</p>
                   </div>
                   <div className="px-4">
                     <OpenSourceContributionsCard />
+                  </div>
+                  <div className="px-4 flex justify-center mt-6 sm:mt-8 mb-4 sm:mb-6">
+                    <a
+                      href="https://github.com/pulls?q=is%3Apr+author%3AMeraj-08+is%3Amerged"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <NeumorphButton className="inline-flex items-center gap-1 px-4 py-2 text-xs sm:text-sm text-neutral-800 dark:text-white/80 hover:text-neutral-900 dark:hover:text-white">
+                        <span>View All</span>
+                        <span aria-hidden="true">→</span>
+                      </NeumorphButton>
+                    </a>
                   </div>
                 </div>
               </Reveal>
