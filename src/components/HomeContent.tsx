@@ -19,9 +19,6 @@ import { projects } from '@/data/projects'
 import { MasonryProjectCard } from './MasonryProjectCard'
 import { blogs } from '@/data/blogs'
 import { BlogCard } from './BlogCard'
-import { sponsors } from '@/data/sponsors'
-import SponsorShowcase from './SponsorShowcase'
-import SponsorButton from './SponsorButton'
 import NeumorphButton from './NeumorphButton'
 // import SpotifyPlayer from './SpotifyPlayer'
 
@@ -196,6 +193,23 @@ export default function NewHeroSection() {
                 <SectionBorder className="mt-0 pt-0" />
               </Reveal>
 
+              {/* Open Source Contributions */}
+              <Reveal delay={0.1}>
+                <div className="sm:px-12 py-2">
+                  <div className="px-4 mb-4 sm:mb-6 mt-4 sm:mt-6">
+                    <h2 className="text-base sm:text-xl opacity-70 font-[family-name:var(--font-instrument-serif)]">Open Source Contributions</h2>
+                    <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">Selected merged pull requests, ordered by lines changed.</p>
+                  </div>
+                  <div className="px-4">
+                    <OpenSourceContributionsCard />
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.05}>
+                <SectionBorder className="mt-0 pt-0" />
+              </Reveal>
+
               {/* Thoughts Section */}
               <Reveal delay={0.1}>
                 <div className="sm:px-12 py-2">
@@ -226,22 +240,6 @@ export default function NewHeroSection() {
                 <SectionBorder className="mt-0 pt-0" />
               </Reveal>
               
-              {/* Open Source Contributions Section */}
-              {/* <Reveal delay={0.1}>
-                <div className="sm:px-12 mt-4">
-                  <h2 className="text-base font-[family-name:var(--font-instrument-serif)] sm:text-xl opacity-40 mt-4 sm:mt-8 sm:ml-5 leading-relaxed -tracking-[0.01em] mb-4 px-4">
-                    Open Source Contributions <span className="opacity-20">●</span> {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </h2>
-                  <div className="px-4">
-                    <OpenSourceContributionsCard />
-                  </div>
-                </div>
-              </Reveal>
-              
-              <Reveal delay={0.05}>
-                <SectionBorder className="mt-4 pt-0" />
-              </Reveal> */}
-
               {/* call to action*/}
               <Reveal delay={0.1}>
                 <div className="px-4 sm:px-12">

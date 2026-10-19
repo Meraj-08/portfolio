@@ -1,147 +1,151 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { ArrowUpRight, ChevronDown, ChevronUp, GitMerge } from 'lucide-react'
-import { fallbackContributions } from '@/lib/github'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 
 interface Contribution {
   title: string
   description: string
   repository: string
   link: string
-  date: string
-  type?: 'feature' | 'fix' | 'perf' | 'docs' | 'refactor' | 'test' | 'chore'
-  state?: 'open' | 'closed' | 'merged'
+  mergedAt: string
+  additions: number
+  deletions: number
+  changedFiles: number
 }
 
+// Curated merged PRs, sorted by total lines changed (additions + deletions).
+// Keep these details static so the section renders without a GitHub token and
+// remains available when GitHub's API is rate limited.
+const contributions: Contribution[] = [
+  {
+    title: 'Add Antigravity ACP support to Chat',
+    description: 'Added Antigravity as a Chat harness, including approvals, model controls, and Terminal ↔ Chat conversation handoff.',
+    repository: 'OrchestratorInc/agent-orchestrator',
+    link: 'https://github.com/OrchestratorInc/agent-orchestrator/pull/6600',
+    mergedAt: 'Oct 15, 2026',
+    additions: 2865,
+    deletions: 20,
+    changedFiles: 34,
+  },
+  {
+    title: 'Add GitHub Copilot ACP Chat support',
+    description: 'Added Copilot CLI to Chat with approval handling, model selection, history replay, and Terminal ↔ Chat handoff.',
+    repository: 'OrchestratorInc/agent-orchestrator',
+    link: 'https://github.com/OrchestratorInc/agent-orchestrator/pull/6662',
+    mergedAt: 'Oct 16, 2026',
+    additions: 1973,
+    deletions: 74,
+    changedFiles: 22,
+  },
+  {
+    title: 'Continue stopped Chat turns',
+    description: 'Added a Continue action that carries the original task and recent response context into a new turn.',
+    repository: 'OrchestratorInc/agent-orchestrator',
+    link: 'https://github.com/OrchestratorInc/agent-orchestrator/pull/6328',
+    mergedAt: 'Oct 15, 2026',
+    additions: 1423,
+    deletions: 50,
+    changedFiles: 35,
+  },
+  {
+    title: 'Ask about selected lines in Chat',
+    description: 'Added a selection action for asking Chat about code or diff lines directly from the file viewer.',
+    repository: 'OrchestratorInc/agent-orchestrator',
+    link: 'https://github.com/OrchestratorInc/agent-orchestrator/pull/6277',
+    mergedAt: 'Oct 7, 2026',
+    additions: 1190,
+    deletions: 2,
+    changedFiles: 27,
+  },
+  {
+    title: 'Add AeroLeads plugin integration',
+    description: 'Added a LinkedIn profile details integration with API-key authentication, validation, and error handling.',
+    repository: 'corsairdev/corsair',
+    link: 'https://github.com/corsairdev/corsair/pull/729',
+    mergedAt: 'Aug 21, 2026',
+    additions: 1124,
+    deletions: 0,
+    changedFiles: 17,
+  },
+  {
+    title: 'Remember file display mode across sessions',
+    description: 'Preserved a file tab’s selected preview mode when navigating between sessions and returning.',
+    repository: 'OrchestratorInc/agent-orchestrator',
+    link: 'https://github.com/OrchestratorInc/agent-orchestrator/pull/5997',
+    mergedAt: 'Oct 3, 2026',
+    additions: 358,
+    deletions: 17,
+    changedFiles: 10,
+  },
+]
 
+function formatNumber(value: number) {
+  return new Intl.NumberFormat('en-US').format(value)
+}
 
 export default function OpenSourceContributionsCard() {
   const [showAll, setShowAll] = useState(false)
-  const [contributions, setContributions] = useState<Contribution[]>(fallbackContributions)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const loadContributions = async () => {
-      try {
-        setLoading(true)
-        
-        const response = await fetch('/api/github-contributions?username=KartikLabhshetwar&limit=50')
-        const data = await response.json()
-        
-        if (data.success && data.contributions.length > 0) {
-          setContributions(data.contributions)
-        }
-      } catch (error) {
-        console.error('Failed to load GitHub contributions:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadContributions()
-  }, [])
-
   const displayedContributions = showAll ? contributions : contributions.slice(0, 3)
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="rounded-lg bg-white dark:bg-zinc-900 p-3 sm:p-6"
-    >
-      {loading ? (
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-4 bg-neutral-200 dark:bg-neutral-700 rounded w-3/4"></div>
-                    <div className="h-3 bg-neutral-200 dark:bg-neutral-700 rounded w-12"></div>
-                  </div>
-                  <div className="h-3 bg-neutral-200 dark:bg-neutral-700 rounded w-full mb-2"></div>
-                  <div className="h-3 bg-neutral-200 dark:bg-neutral-700 rounded w-2/3"></div>
-                </div>
-                <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-700 rounded"></div>
-              </div>
-              {i < 3 && <div className="mt-4 border-b border-neutral-300 dark:border-[#2E2E2E]" />}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-4 group">
-          {displayedContributions.map((contribution, index) => (
-          <motion.div
-            key={contribution.title}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="group/item transition-opacity duration-300 group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100"
-          >
+    <div className="rounded-lg bg-white p-3 dark:bg-zinc-900 sm:p-6">
+      <div className="space-y-4">
+        {displayedContributions.map((contribution, index) => (
+          <div key={contribution.link}>
             <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                  {contribution.state === 'merged' && (
-                    <GitMerge className="w-4 h-4 text-purple-500 dark:text-purple-400 shrink-0 transition-opacity duration-300 group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100" />
-                  )}
-                  <h4 className="text-sm sm:text-[15px] leading-6 sm:leading-7 text-black/80 group-has-hover:text-black/40 group-has-hover:group-hover/item:text-black dark:text-white/80 dark:group-has-hover:text-white/40 dark:group-has-hover:group-hover/item:text-white font-medium transition-colors duration-300">
+              <div className="min-w-0 flex-1">
+                <div className="mb-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <GitMerge aria-hidden="true" className="size-4 shrink-0 text-purple-500 dark:text-purple-400" />
+                  <h3 className="text-sm font-medium leading-6 text-black/85 dark:text-white/85 sm:text-[15px]">
                     {contribution.title}
-                  </h4>
-                  <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 shrink-0 group-has-hover:text-neutral-400 dark:group-has-hover:text-neutral-500 group-has-hover:group-hover/item:text-neutral-500 dark:group-has-hover:group-hover/item:text-neutral-400 transition-colors duration-300">{contribution.date}</span>
+                  </h3>
                 </div>
-                
-                <p className="text-xs text-neutral-600 dark:text-neutral-400 group-has-hover:text-neutral-400 dark:group-has-hover:text-neutral-500 group-has-hover:group-hover/item:text-neutral-600 dark:group-has-hover:group-hover/item:text-neutral-400 leading-relaxed transition-colors duration-300">
+                <p className="mb-1 text-[11px] text-neutral-500 dark:text-neutral-400">
+                  {contribution.repository} <span aria-hidden="true">·</span> Merged {contribution.mergedAt}
+                </p>
+                <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400">
                   {contribution.description}
                 </p>
+                <p className="mt-2 text-[10px] text-neutral-500 dark:text-neutral-500">
+                  +{formatNumber(contribution.additions)} / −{formatNumber(contribution.deletions)} lines
+                  <span aria-hidden="true"> · </span>{contribution.changedFiles} files changed
+                </p>
               </div>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={contribution.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 p-2 rounded-lg bg-neutral-200 border-2 border-neutral-500 dark:bg-neutral-800 dark:border-neutral-500 transition-all duration-300 group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100"
-                  >
-                    <ArrowUpRight className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  View contribution
-                </TooltipContent>
-              </Tooltip>
+              <a
+                href={contribution.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${contribution.title} on GitHub`}
+                className="mt-1 shrink-0 rounded-lg border-2 border-neutral-500 bg-neutral-200 p-2 transition-colors hover:bg-neutral-300 dark:border-neutral-500 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+              >
+                <ArrowUpRight aria-hidden="true" className="size-4 text-neutral-600 dark:text-neutral-300" />
+              </a>
             </div>
-            
-            {index < displayedContributions.length - 1 && (
-              <div className="mt-4 border-b border-neutral-300 dark:border-[#2E2E2E] transition-opacity duration-300 group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100" />
-            )}
-          </motion.div>
-          ))}
-        </div>
-      )}
+            {index < displayedContributions.length - 1 ? (
+              <div className="mt-4 border-b border-neutral-300 dark:border-[#2E2E2E]" />
+            ) : null}
+          </div>
+        ))}
+      </div>
 
-
-      {/* Show More/Less Toggle */}
-      {!loading && contributions.length > 3 && (
-        <div className="mt-4 pt-4 border-t border-neutral-300 dark:border-[#2E2E2E]">
+      {contributions.length > 3 ? (
+        <div className="mt-4 border-t border-neutral-300 pt-4 dark:border-[#2E2E2E]">
           <button
+            type="button"
             onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors duration-200 group"
+            className="group inline-flex items-center gap-2 text-sm text-neutral-600 transition-colors hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
+            aria-expanded={showAll}
           >
             <span>{showAll ? 'Show less' : `Show all ${contributions.length} contributions`}</span>
             {showAll ? (
-              <ChevronUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform duration-200" />
+              <ChevronUp aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5" />
             ) : (
-              <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-200" />
+              <ChevronDown aria-hidden="true" className="size-4 transition-transform group-hover:translate-y-0.5" />
             )}
           </button>
         </div>
-      )}
-    </motion.div>
+      ) : null}
+    </div>
   )
 }
