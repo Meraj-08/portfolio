@@ -85,7 +85,7 @@ function formatNumber(value: number) {
 
 export default function OpenSourceContributionsCard() {
   return (
-    <div className="group">
+    <div>
       {contributions.slice(0, 3).map((contribution) => (
         <a
           key={contribution.link}
@@ -96,10 +96,10 @@ export default function OpenSourceContributionsCard() {
           aria-label={`View ${contribution.title} on GitHub`}
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <article className="group/item cursor-pointer touch-manipulation border-b border-neutral-200 py-5 transition-opacity duration-300 group-has-hover:opacity-40 group-has-hover:group-hover/item:opacity-100 dark:border-neutral-800 sm:py-6">
+          <article className="cursor-pointer touch-manipulation border-b border-neutral-200 py-5 dark:border-neutral-800 sm:py-6">
             <div className="mb-1 flex flex-wrap items-center gap-x-2 gap-y-1">
               <GitMerge aria-hidden="true" className="size-4 shrink-0 text-purple-500 dark:text-purple-400" />
-              <h3 className="text-sm font-medium leading-6 text-black/80 transition-colors group-has-hover:group-hover/item:text-black dark:text-white/80 dark:group-has-hover:group-hover/item:text-white sm:text-[15px]">
+              <h3 className="text-sm font-medium leading-6 text-black/80 dark:text-white/80 sm:text-[15px]">
                 {contribution.title}
               </h3>
             </div>
